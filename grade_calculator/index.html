@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Grade Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">🎓 Ultimate Grade Calculator</h1>
+        
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="calculator-tab" data-bs-toggle="tab" data-bs-target="#calculator" type="button">Grade Calculator</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pass-tab" data-bs-toggle="tab" data-bs-target="#pass" type="button">Grade Needed</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="panic-tab" data-bs-toggle="tab" data-bs-target="#panic" type="button">Panic Meter</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="study-tab" data-bs-toggle="tab" data-bs-target="#study" type="button">Study Timer</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button">Grade History</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="sandbox-tab" data-bs-toggle="tab" data-bs-target="#sandbox" type="button">What If?</button>
+            </li>
+        </ul>
+
+        <div class="tab-content p-3 border border-top-0 rounded-bottom" id="myTabContent">
+            <!-- Grade Calculator Tab -->
+            <div class="tab-pane fade show active" id="calculator" role="tabpanel">
+                <h2>Weighted Grade Calculator</h2>
+                <div id="gradeInputs">
+                    <div class="grade-row row g-3 mb-2">
+                        <div class="col-md-5">
+                            <input type="number" class="form-control grade" placeholder="Grade (0-10)" step="0.1" min="0" max="10">
+                        </div>
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <input type="number" class="form-control weight" placeholder="Weight (%)" step="1" min="0" max="100">
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-danger remove-grade" type="button">Remove</button>
+                        </div>
+                    </div>
+                </div>
+                <button id="addGrade" class="btn btn-primary mt-2">+ Add Grade</button>
+                <div class="mt-3">
+                    <h4>Weighted Average: <span id="weightedAverage">-</span></h4>
+                    <div class="progress mt-2">
+                        <div id="gradeProgress" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grade Needed Tab -->
+            <div class="tab-pane fade" id="pass" role="tabpanel">
+                <h2>Grade Needed to Pass</h2>
+                <div class="mb-3">
+                    <label for="currentGrade" class="form-label">Current Grade (0-10)</label>
+                    <input type="number" class="form-control" id="currentGrade" step="0.1" min="0" max="10" value="6.0">
+                </div>
+                <div class="mb-3">
+                    <label for="desiredGrade" class="form-label">Desired Grade (5.5+ to pass)</label>
+                    <input type="number" class="form-control" id="desiredGrade" step="0.1" min="0" max="10" value="5.5">
+                </div>
+                <div class="mb-3">
+                    <label for="finalWeight" class="form-label">Final Exam Weight (%)</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="finalWeight" step="1" min="0" max="100" value="50">
+                        <span class="input-group-text">%</span>
+                    </div>
+                </div>
+                <button id="calculateNeeded" class="btn btn-primary">Calculate</button>
+                <div id="neededResult" class="mt-3">
+                    <div class="alert" id="neededAlert"></div>
+                </div>
+            </div>
+
+            <!-- Panic Meter Tab -->
+            <div class="tab-pane fade" id="panic" role="tabpanel">
+                <h2>Exam Panic Level Meter</h2>
+                <div class="mb-3">
+                    <label for="currentScore" class="form-label">Current Grade (0-10)</label>
+                    <input type="number" class="form-control" id="currentScore" step="0.1" min="0" max="10" value="5.0">
+                </div>
+                <div class="mb-3">
+                    <label for="goalScore" class="form-label">Goal Grade (0-10)</label>
+                    <input type="number" class="form-control" id="goalScore" step="0.1" min="0" max="10" value="5.5">
+                </div>
+                <div class="mb-3">
+                    <label for="examWeight" class="form-label">Next Test Weight (%)</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="examWeight" step="1" min="0" max="100" value="30">
+                        <span class="input-group-text">%</span>
+                    </div>
+                </div>
+                <button id="checkPanic" class="btn btn-primary">Check Panic Level</button>
+                <div id="panicResult" class="mt-3">
+                    <div class="alert" id="panicAlert"></div>
+                    <div id="panicMeme" class="text-center mt-3"></div>
+                </div>
+            </div>
+
+            <!-- Study Timer Tab -->
+            <div class="tab-pane fade" id="study" role="tabpanel">
+                <h2>ADHD-Friendly Study Timer</h2>
+                <div class="mb-3">
+                    <label for="studyMinutes" class="form-label">Study Time (minutes)</label>
+                    <input type="number" class="form-control" id="studyMinutes" value="25" min="1" max="120">
+                </div>
+                <div class="mb-3">
+                    <label for="breakMinutes" class="form-label">Break Time (minutes)</label>
+                    <input type="number" class="form-control" id="breakMinutes" value="5" min="1" max="30">
+                </div>
+                <button id="startTimer" class="btn btn-primary">Start Timer</button>
+                <button id="pauseTimer" class="btn btn-warning" disabled>Pause</button>
+                <button id="resetTimer" class="btn btn-danger">Reset</button>
+                
+                <div class="mt-4 text-center">
+                    <div id="timerDisplay" class="display-1">25:00</div>
+                    <div id="timerStatus" class="h4">Ready to study!</div>
+                    <div class="progress mt-3" style="height: 30px;">
+                        <div id="timerProgress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                    </div>
+                </div>
+                
+                <div id="memeContainer" class="text-center mt-4"></div>
+            </div>
+
+            <!-- Grade History Tab -->
+            <div class="tab-pane fade" id="history" role="tabpanel">
+                <h2>Grade History Analyzer</h2>
+                <div class="mb-3">
+                    <label for="gradeHistory" class="form-label">Paste your grades (one per line, format: Subject, Grade, Weight)</label>
+                    <textarea class="form-control" id="gradeHistory" rows="10" placeholder="Math, 7.5, 20
+Science, 6.0, 30
+History, 8.0, 25"></textarea>
+                </div>
+                <button id="analyzeGrades" class="btn btn-primary">Analyze</button>
+                <div id="analysisResults" class="mt-3"></div>
+            </div>
+
+            <!-- What If Sandbox Tab -->
+            <div class="tab-pane fade" id="sandbox" role="tabpanel">
+                <h2>"If I Get This, Then What?" Sandbox</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4>Current Grades</h4>
+                        <div id="sandboxGrades">
+                            <div class="sandbox-row row g-3 mb-2">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control sandbox-grade" placeholder="Grade (e.g., 7.5 or A-)" value="7.5">
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input type="number" class="form-control sandbox-weight" placeholder="Weight" value="20" min="0" max="100">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button class="btn btn-danger btn-sm remove-sandbox" type="button">×</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="addSandboxRow" class="btn btn-primary btn-sm mt-2">+ Add Grade</button>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>What If I Get...</h4>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="whatIfGrade" placeholder="Grade (e.g., 8.0 or B+)" value="8.0">
+                            <span class="input-group-text">with weight</span>
+                            <input type="number" class="form-control" id="whatIfWeight" value="30" min="0" max="100">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <button id="calculateWhatIf" class="btn btn-primary">Calculate</button>
+                        <div id="whatIfResult" class="mt-3">
+                            <div class="alert alert-info">Enter your grades and click Calculate to see results</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h4>Final Grade: <span id="finalGradeDisplay">-</span></h4>
+                        <div class="progress mt-2" style="height: 30px;">
+                            <div id="gradeVisual" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center mt-5 mb-3 text-muted">
+        Made with ❤️ for students who need a little extra help
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
